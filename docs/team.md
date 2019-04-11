@@ -6,11 +6,11 @@ title:  Team
 # {{ page.title }}
 
 
-## USER 1
-***UCI Net ID***: ucinetid1
+## Suzanna Chen
+***UCI Net ID***: suzannc1
 
-## USER 2
-***UCI Net ID***: ucinetid2
+## Yingda Tao
+***UCI Net ID***: yingdat1
 
-## USER 3
-***UCI Net ID***: ucinetid3
+## Nidhi Vellanki
+***UCI Net ID***: vellankn
