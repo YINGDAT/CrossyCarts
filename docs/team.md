@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  MalmoInvaders
+title:  Team Members
 ---
 
 # {{ page.title }}
