@@ -6,11 +6,11 @@ title:  Team Members
 # {{ page.title }}
 
 
-## Suzanna Chen
+### Suzanna Chen
 ***UCI Net ID***: suzannc1
 
-## Yingda Tao
+### Yingda Tao
 ***UCI Net ID***: yingdat1
 
-## Nidhi Vellanki
+### Nidhi Vellanki
 ***UCI Net ID***: vellankn
