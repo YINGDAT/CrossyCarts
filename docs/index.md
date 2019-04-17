@@ -1,6 +1,7 @@
 ---
 layout: default
 title:  Home
+header-img: ghast.jpg
 ---
 
 Source code: https://github.com/YINGDAT/MalmoInvaders
