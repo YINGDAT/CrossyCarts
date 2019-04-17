@@ -7,7 +7,7 @@ subtitle: 'CS 175: Project in AI (in Minecraft)'
 
 #########################
 # more settings
-
+header-img: img/ghast.jpg
 markdown: kramdown
 
 exclude:
