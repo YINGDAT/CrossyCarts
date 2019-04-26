@@ -17,7 +17,7 @@ Our game state is the surrent position of the agent and position of the carts on
 
 |             | Goal (+10) |     |             |     |       |             |
 |-------------|------------|-----|-------------|-----|-------|-------------|
-| <--X (+/-1) | -10        | -10 | <--X (+/-1) | -10 | -10   | <--X (+/-1) |
+| <--X (+/-1) | -10        | -10 | <--X (+/-1) | -10   | -10   | <--X (+/-1) |
 |             |            |     |             |     | Start |             |
 
 Our baseline for success is if the agent can get on and off the minecart without dying, and our baseline for failure is if the agent doesn’t get off the minecart or gets on the tracks. We expect our AI to eventually be able to get on the first available minecart at each track in order to minimize course completion time.
