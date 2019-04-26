@@ -7,15 +7,22 @@ title: Proposal
 ## {{ page.title }}
 
 ### Summary of the Project 
-Our project is an adaptation of Space Invaders for Minecraft. The AI will be in an enclosed area with an x number of Ghasts. Ghasts are enemies in minecraft that fly around and shoot fireballs at the player. At each level, the number of Ghasts in the room will increase. The goal of our project is for the AI to learn how to kill the Ghasts without getting killed. The input is the Ghasts’ locations, how many are left to kill, the distance between the player and the Ghast, and where the Ghasts will shoot back. The output is where the agent will shoot and the location it will move to. The job of the AI is to determine which Ghast is the best one to kill and how to move to the position without getting shot. It should consider the cost of moving to each position before it decides which one to go to.  
+The goal of our project is to have the agent successfully cross the road by riding minecarts and getting off at its destinations. The agent’s vision will be confined to a width of 24 blocks since minecarts move at 8 m/s which is 8 blocks/sec.  If the agent moves forward without getting on a minecart (touches the track) or misses its destination, then it “dies”. The agent can only move forward. 
 
 ### AI/ML Algorithms
-We will be using reinforcement learning with Q-learning.
+We will be using reinforcement learning with tabular Q-learning. 
 
 ### Evaluation Plan
-The metrics we will use to evaluate our model will be level completion time, lives taken, shot accuracy, and number of levels completed. Our baseline for failure is getting killed without killing any Ghasts at level 1, and our baseline for success is killing all of the Ghasts and clearing all of the levels. Some example evaluations are: +10 for killing a Ghast with a bow, +5 for making a Ghast kill another Ghast, +5 for deflecting the fireball, -5 for missing a shot, and -15 for getting hit. Since we are using reinforcement learning/Q-learning, our data will be continuously updated as the AI plays.
+Our game state is the surrent position of the agent and position of the carts on the track directly in front of the agent. The only action the agent can perform is moving forward. Some examples of metrics we will be using are +10 if the agent successfully reaches a safe zone, +1 if the agent can get on the minecart, -10 if it dies (the agent does not get off or does not get on the minecart), and -1 for missing a minecart and waiting for the next one. 
 
-We will verify that the AI works based on whether it is able to clear levels or not. Some examples of basic sanity cases we will use are whether or not the AI can avoid getting shot and if the AI can pick the best Ghast to kill. Our moonshot case is if the AI can clear levels which have the Ghasts moving and shooting too fast for a human to play against. 
+|             | Goal (+10) |     |             |     |       |             |
+|-------------|------------|-----|-------------|-----|-------|-------------|
+| <--X (+/-1) | -10        | -10 | <--X (+/-1) | -10 | -10   | <--X (+/-1) |
+|             |            |     |             |     | Start |             |
+
+Our baseline for success is if the agent can get on and off the minecart without dying, and our baseline for failure is if the agent doesn’t get off the minecart or gets on the tracks. We expect our AI to eventually be able to get on the first available minecart at each track in order to minimize course completion time.
+
+We will verify that the AI works based on whether it can determine if there is a minecart in front of it before moving forward and get off at its destination. Our moonshot case is if the agent can successfully cross all of the tracks without dying in minimal time, meaning it gets on the first minecart that it can at every track.
 
 
 ### Appointment with the Instructor 
