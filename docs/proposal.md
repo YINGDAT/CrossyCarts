@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Proposal
-header-img" img/crossycarts.png
+header-img: img/crossycarts.png
 ---
 
 
