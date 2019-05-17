@@ -4,6 +4,10 @@
 title:    'CrossyCarts'
 subtitle: 'CS 175: Project in AI (in Minecraft)'
 
+baseurl: "/CrossyCarts"
+header-img: img/crossycarts.png
+headercolor: "#FFFFFF"
+
 #########################
 # more settings
 markdown: kramdown
