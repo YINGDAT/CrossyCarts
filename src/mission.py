@@ -31,9 +31,28 @@ def GetMissionXML():
 			  </ServerInitialConditions>
 
 			  <ServerHandlers>
-				  <FlatWorldGenerator generatorString="3;7,44*49,73,35:1,159:4,95:13,35:13,159:11,95:10,159:14,159:6,35:6,95:6;35;village"/>
+				  <FlatWorldGenerator generatorString="biome_5" />
 				  <DrawingDecorator>
-                    <DrawCuboid x1="-10" y1="226" z1="-1" x2="11" y2="226" z2="20" type="air"/>
+                  		<DrawCuboid x1="-10" y1="226" z1="-1" x2="11" y2="246" z2="20" type="air"/>
+                  		<DrawCuboid x1="-1000" y1="4" z1="-3" x2="1000" y2="40" z2="-3" type="stone_slab"/>
+                  		
+                  		<DrawCuboid x1="-10" y1="4" z1="1" x2="30" y2="4" z2="1" type="dirt"/>
+                  		<DrawCuboid x1="31" y1="4" z1="1" x2="31" y2="4" z2="5" type="dirt"/>
+                  		<DrawCuboid x1="-10" y1="4" z1="5" x2="30" y2="4" z2="5" type="dirt"/>
+                  		<DrawCuboid x1="-11" y1="4" z1="1" x2="-11" y2="4" z2="5" type="dirt"/>
+
+                  		<DrawCuboid x1="-10" y1="4" z1="2" x2="19" y2="4" z2="2" type="emerald_block"/>
+                  		<DrawCuboid x1="20" y1="4" z1="2" x2="20" y2="4" z2="2" type="redstone_block"/>
+                  		<DrawCuboid x1="21" y1="4" z1="2" x2="30" y2="4" z2="2" type="emerald_block"/>
+
+                  		<DrawCuboid x1="-10" y1="6" z1="1" x2="30" y2="6" z2="1" type="fence"/>
+                  		<DrawCuboid x1="-10" y1="5" z1="1" x2="30" y2="5" z2="1" type="rail"/>
+                  		<DrawCuboid x1="31" y1="5" z1="1" x2="31" y2="5" z2="4" type="rail"/>
+                  		<DrawCuboid x1="-10" y1="5" z1="5" x2="31" y2="5" z2="5" type="rail"/>
+                  		<DrawCuboid x1="-11" y1="5" z1="1" x2="-11" y2="5" z2="5" type="rail"/>
+
+
+
 				  </DrawingDecorator>
 
 				  <ServerQuitFromTimeUp timeLimitMs="10000"/>
@@ -44,7 +63,7 @@ def GetMissionXML():
 			  <AgentSection mode="Survival">
 				<Name>CrossyCartsBot</Name>
 				<AgentStart>
-					<Placement x="0.5" y="56.0" z="0.5" yaw="0"/>
+					<Placement x="0" y="5" z="0"/>
 				</AgentStart>
 				<AgentHandlers>
 					<DiscreteMovementCommands/>
