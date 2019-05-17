@@ -1,8 +1,8 @@
 ---
 layout: default
 title:  Home
+header-img: img/crossycarts.png
 ---
-![](img/crossycarts.png)
 Source code: https://github.com/YINGDAT/CrossyCarts
 
 Reports:
