@@ -24,34 +24,34 @@ def GetMissionXML():
 			<ServerSection>
 			  <ServerInitialConditions>
 				<Time>
-					<StartTime>1000</StartTime>
+					<StartTime>0</StartTime>
 					<AllowPassageOfTime>false</AllowPassageOfTime>
 				</Time>
 				<Weather>clear</Weather>
 			  </ServerInitialConditions>
 
 			  <ServerHandlers>
-				  <FlatWorldGenerator generatorString="biome_5" />
+				  <FlatWorldGenerator generatorString="biome_1" />
 				  <DrawingDecorator>
-                  		<DrawCuboid x1="-10" y1="226" z1="-1" x2="11" y2="246" z2="20" type="air"/>
-                  		<DrawCuboid x1="-1000" y1="4" z1="-3" x2="1000" y2="40" z2="-3" type="stone_slab"/>
-                  		
-                  		<DrawCuboid x1="-10" y1="4" z1="1" x2="30" y2="4" z2="1" type="dirt"/>
-                  		<DrawCuboid x1="31" y1="4" z1="1" x2="31" y2="4" z2="5" type="dirt"/>
-                  		<DrawCuboid x1="-10" y1="4" z1="5" x2="30" y2="4" z2="5" type="dirt"/>
-                  		<DrawCuboid x1="-11" y1="4" z1="1" x2="-11" y2="4" z2="5" type="dirt"/>
+	                  		<DrawCuboid x1="-11" y1="4" z1="-3" x2="31" y2="40" z2="-3" type="stone_slab"/>
+	                  		<DrawCuboid x1="-11" y1="4" z1="-2" x2="-11" y2="40" z2="10" type="stone_slab"/>
+	                  		<DrawCuboid x1="31" y1="4" z1="-2" x2="31" y2="40" z2="10" type="stone_slab"/>
+	                  		
+	                  		<DrawCuboid x1="-10" y1="4" z1="1" x2="30" y2="4" z2="1" type="redstone_block"/>
+	                  		<DrawCuboid x1="-11" y1="5" z1="1" x2="-11" y2="5" z2="1" type="obsidian"/>
+	                  		<DrawCuboid x1="31" y1="5" z1="1" x2="31" y2="5" z2="1" type="obsidian"/>
+	                  		<DrawCuboid x1="-10" y1="6" z1="1" x2="30" y2="6" z2="1" type="fence"/>
+	                  		<DrawLine x1="-10" y1="5" z1="1" x2="30" y2="5" z2="1" type="golden_rail"/>
+	                  		<DrawEntity x="-10" y="5" z="1" type="MinecartRideable"/>
+	                  		<DrawEntity x="-8" y="5" z="1" type="MinecartRideable"/>
 
-                  		<DrawCuboid x1="-10" y1="4" z1="2" x2="19" y2="4" z2="2" type="emerald_block"/>
-                  		<DrawCuboid x1="20" y1="4" z1="2" x2="20" y2="4" z2="2" type="redstone_block"/>
-                  		<DrawCuboid x1="21" y1="4" z1="2" x2="30" y2="4" z2="2" type="emerald_block"/>
+	                  		<DrawCuboid x1="-10" y1="4" z1="2" x2="-1" y2="4" z2="2" type="obsidian"/>
+	                  		<DrawCuboid x1="0" y1="4" z1="2" x2="19" y2="4" z2="2" type="quartz_block"/>
+	                  		<DrawCuboid x1="20" y1="4" z1="2" x2="20" y2="4" z2="2" type="emerald_block"/>
+	                  		<DrawCuboid x1="21" y1="4" z1="2" x2="30" y2="4" z2="2" type="obsidian"/>
 
-                  		<DrawCuboid x1="-10" y1="6" z1="1" x2="30" y2="6" z2="1" type="fence"/>
-                  		<DrawCuboid x1="-10" y1="5" z1="1" x2="30" y2="5" z2="1" type="rail"/>
-                  		<DrawCuboid x1="31" y1="5" z1="1" x2="31" y2="5" z2="4" type="rail"/>
-                  		<DrawCuboid x1="-10" y1="5" z1="5" x2="31" y2="5" z2="5" type="rail"/>
-                  		<DrawCuboid x1="-11" y1="5" z1="1" x2="-11" y2="5" z2="5" type="rail"/>
-
-
+	                  		<DrawCuboid x1="-10" y1="4" z1="4" x2="30" y2="4" z2="4" type="redstone_block"/>
+	                  		<DrawLine x1="-10" y1="5" z1="4" x2="30" y2="5" z2="4" type="golden_rail"/>
 
 				  </DrawingDecorator>
 
@@ -72,8 +72,8 @@ def GetMissionXML():
 					</AgentQuitFromTouchingBlockType>
 					<ObservationFromGrid>
 					  <Grid name="floorAll">
-						<min x="-10" y="-1" z="-10"/>
-						<max x="10" y="-1" z="10"/>
+						<min x="0" y="0" z="0"/>
+						<max x="0" y="0" z="0"/>
 					  </Grid>
 				  </ObservationFromGrid>
 				</AgentHandlers>
