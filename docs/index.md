@@ -2,7 +2,7 @@
 layout: default
 title:  Home
 ---
-
+![](img/crossycarts.png)
 Source code: https://github.com/YINGDAT/CrossyCarts
 
 Reports:
