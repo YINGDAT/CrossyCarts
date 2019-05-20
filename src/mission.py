@@ -33,22 +33,21 @@ def GetMissionXML(goal):
 			  <ServerHandlers>
 				  <FlatWorldGenerator generatorString="biome_1" />
 				  <DrawingDecorator>
-	                  		<DrawCuboid x1="-11" y1="4" z1="-3" x2="31" y2="40" z2="-3" type="stone_slab"/>
-	                  		<DrawCuboid x1="-11" y1="4" z1="-2" x2="-11" y2="40" z2="10" type="stone_slab"/>
+	                  		
+	                  		<DrawCuboid x1="-21" y1="4" z1="-2" x2="-21" y2="40" z2="10" type="stone_slab"/>
 	                  		<DrawCuboid x1="31" y1="4" z1="-2" x2="31" y2="40" z2="10" type="stone_slab"/>
 	                  		
-	                  		<DrawCuboid x1="-10" y1="4" z1="1" x2="30" y2="4" z2="1" type="redstone_block"/>
-	                  		<DrawCuboid x1="-11" y1="5" z1="1" x2="-11" y2="5" z2="1" type="obsidian"/>
+	                  		<DrawCuboid x1="-20" y1="4" z1="1" x2="30" y2="4" z2="1" type="redstone_block"/>
+	                  		<DrawCuboid x1="-21" y1="5" z1="1" x2="-21" y2="5" z2="1" type="obsidian"/>
 	                  		<DrawCuboid x1="31" y1="5" z1="1" x2="31" y2="5" z2="1" type="obsidian"/>
-	                  		<DrawCuboid x1="-10" y1="6" z1="1" x2="30" y2="6" z2="1" type="fence"/>
-	                  		<DrawLine x1="-10" y1="5" z1="1" x2="30" y2="5" z2="1" type="golden_rail"/>
-	                  		<DrawEntity x="-10" y="5" z="1" type="MinecartRideable"/>
+	                  		<DrawLine x1="-20" y1="5" z1="1" x2="30" y2="5" z2="1" type="golden_rail"/>
+	                  		<DrawEntity x="-20" y="5" z="1" type="MinecartRideable"/>
 
-	                  		<DrawCuboid x1="-10" y1="4" z1="2" x2="30" y2="4" z2="2" type="quartz_block"/>
+	                  		<DrawCuboid x1="-20" y1="4" z1="2" x2="30" y2="4" z2="2" type="quartz_block"/>
 	                  		<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="2" x2="''' + str(goal) + '''" y2="4" z2="2" type="emerald_block"/>
 
-	                  		<DrawCuboid x1="-10" y1="4" z1="4" x2="30" y2="4" z2="4" type="redstone_block"/>
-	                  		<DrawLine x1="-10" y1="5" z1="4" x2="30" y2="5" z2="4" type="golden_rail"/>
+	                  		<DrawCuboid x1="-20" y1="4" z1="4" x2="30" y2="4" z2="4" type="redstone_block"/>
+	                  		<DrawLine x1="-20" y1="5" z1="4" x2="30" y2="5" z2="4" type="golden_rail"/>
 
 				  </DrawingDecorator>
 
@@ -60,7 +59,7 @@ def GetMissionXML(goal):
 			  <AgentSection mode="Survival">
 				<Name>CrossyCartsBot</Name>
 				<AgentStart>
-					<Placement x="0" y="5" z="0"/>
+					<Placement x="0.4" y="7" z="0.65" yaw="0.5" pitch="-6"/>
 				</AgentStart>
 				<AgentHandlers>
 					<DiscreteMovementCommands/>
@@ -93,7 +92,6 @@ if __name__ == '__main__':
 
 	num_reps = 1
 	for i in range(num_reps):
-		#rnd = random.random()
 		random.seed(time.time())
 		goal_block = random.randint(-10, 30)
 
@@ -130,3 +128,12 @@ if __name__ == '__main__':
 
 		print()
 		print("Mission", (i+1), "running.")
+
+		# Testing if agent can get into cart
+		for i in range(70):
+			print("use")
+			agent_host.sendCommand("use 1")
+			agent_host.sendCommand("use 0")
+			time.sleep(0.1)
+			if i == 30:				# To wait for cart to loop back before trying to get on again
+				time.sleep(5)
