@@ -13,7 +13,35 @@ import json
 import random
 import math
 
-def GetMissionXML(goal):
+def createTracks(n, length):
+	''' Creates n number of tracks/obstacles with minecarts for the agent to get through'''
+	drawTracks = ""
+	for i in range(n):
+		#random.seed(time.time())
+		goal = random.randint((-length//2), (length//2))
+		trackPos = (i*3)+1
+		if i == 0:
+			trackPos = i+1
+		safePos = trackPos+1
+		emptyPos = safePos+1
+		currTrack = '''	    
+							<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(trackPos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(trackPos) + '''" type="redstone_block"/>
+	                  		<DrawCuboid x1="''' + str(0-(length//2)-1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(0-(length//2)-1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
+	                  		<DrawCuboid x1="''' + str((length//2)+1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str((length//2)+1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
+	                  		<DrawLine x1="''' + str(0-(length//2)) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(length//2) + '''" y2="5" z2="''' + str(trackPos) + '''" type="golden_rail"/>
+	                  		<DrawEntity x="''' + str(0-(length//2)) + '''" y="5" z="''' + str(trackPos) + '''" type="MinecartRideable"/>
+
+	                  		<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(safePos) + '''" type="quartz_block"/>
+	                  		<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(goal) + '''" y2="4" z2="''' + str(safePos) + '''" type="emerald_block"/>
+
+	                '''
+		drawTracks += currTrack
+	return '''<DrawingDecorator>
+    					''' + drawTracks + '''
+    		  </DrawingDecorator>'''
+
+
+def GetMissionXML(n, length):
 	return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 			<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -32,24 +60,7 @@ def GetMissionXML(goal):
 
 			  <ServerHandlers>
 				  <FlatWorldGenerator generatorString="biome_1" />
-				  <DrawingDecorator>
-	                  		
-	                  		<DrawCuboid x1="-21" y1="4" z1="-2" x2="-21" y2="40" z2="10" type="stone_slab"/>
-	                  		<DrawCuboid x1="31" y1="4" z1="-2" x2="31" y2="40" z2="10" type="stone_slab"/>
-	                  		
-	                  		<DrawCuboid x1="-20" y1="4" z1="1" x2="30" y2="4" z2="1" type="redstone_block"/>
-	                  		<DrawCuboid x1="-21" y1="5" z1="1" x2="-21" y2="5" z2="1" type="obsidian"/>
-	                  		<DrawCuboid x1="31" y1="5" z1="1" x2="31" y2="5" z2="1" type="obsidian"/>
-	                  		<DrawLine x1="-20" y1="5" z1="1" x2="30" y2="5" z2="1" type="golden_rail"/>
-	                  		<DrawEntity x="-20" y="5" z="1" type="MinecartRideable"/>
-
-	                  		<DrawCuboid x1="-20" y1="4" z1="2" x2="30" y2="4" z2="2" type="quartz_block"/>
-	                  		<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="2" x2="''' + str(goal) + '''" y2="4" z2="2" type="emerald_block"/>
-
-	                  		<DrawCuboid x1="-20" y1="4" z1="4" x2="30" y2="4" z2="4" type="redstone_block"/>
-	                  		<DrawLine x1="-20" y1="5" z1="4" x2="30" y2="5" z2="4" type="golden_rail"/>
-
-				  </DrawingDecorator>
+				  ''' + createTracks(n,length) + '''
 
 				  <ServerQuitFromTimeUp timeLimitMs="10000"/>
 				  <ServerQuitWhenAnyAgentFinishes/>
@@ -62,13 +73,10 @@ def GetMissionXML(goal):
 					<Placement x="0.4" y="7" z="0.65" yaw="0.5" pitch="-6"/>
 				</AgentStart>
 				<AgentHandlers>
-	                <ContinuousMovementCommands turnSpeedDegs="420"/>
+					<ContinuousMovementCommands turnSpeedDegs="180"/>
     	            <ObservationFromNearbyEntities>
-        	            <Range name="entities" xrange="40" yrange="40" zrange="40"/>
+        	            <Range name="entities" xrange="20" yrange="2" zrange="2"/>
             	    </ObservationFromNearbyEntities>
-					<AgentQuitFromTouchingBlockType>
-						<Block type="redstone_block"/>
-					</AgentQuitFromTouchingBlockType>
 					<ObservationFromGrid>
 					  <Grid name="floorAll">
 						<min x="0" y="0" z="0"/>
@@ -95,10 +103,8 @@ if __name__ == '__main__':
 
 	num_reps = 1
 	for i in range(num_reps):
-		random.seed(time.time())
-		goal_block = random.randint(-10, 30)
 
-		my_mission = MalmoPython.MissionSpec(GetMissionXML(goal_block), True)
+		my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
 		my_mission_record = MalmoPython.MissionRecordSpec()
 		my_mission.requestVideo(800, 500)
 		my_mission.setViewpoint(1)
@@ -133,9 +139,24 @@ if __name__ == '__main__':
 		print("Mission", (i+1), "running.")
 
 		# Testing if agent can get into cart
-		for i in range(100):
+		for i in range(40):
 			print("use")
 			agent_host.sendCommand("use 1")
+			agent_host.sendCommand("use 0")
 			time.sleep(0.1)
-			if i == 30:				# To wait for cart to loop back before trying to get on again
-				time.sleep(5)
+
+		#agent_host.sendCommand("pitch 0.1")
+
+		#command = input("Send a command: ")
+		#agent_host.sendCommand(command)
+		
+		for i in range(100):
+			print("c")
+			agent_host.sendCommand("crouch 1")
+			agent_host.sendCommand("crouch 0")
+			#agent_host.sendCommand("jump 1")
+			#agent_host.sendCommand("jump 0")
+
+
+			time.sleep(0.1)
+		
