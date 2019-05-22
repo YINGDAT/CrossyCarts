@@ -62,7 +62,10 @@ def GetMissionXML(goal):
 					<Placement x="0.4" y="7" z="0.65" yaw="0.5" pitch="-6"/>
 				</AgentStart>
 				<AgentHandlers>
-					<DiscreteMovementCommands/>
+	                <ContinuousMovementCommands turnSpeedDegs="420"/>
+    	            <ObservationFromNearbyEntities>
+        	            <Range name="entities" xrange="40" yrange="40" zrange="40"/>
+            	    </ObservationFromNearbyEntities>
 					<AgentQuitFromTouchingBlockType>
 						<Block type="redstone_block"/>
 					</AgentQuitFromTouchingBlockType>
@@ -130,10 +133,9 @@ if __name__ == '__main__':
 		print("Mission", (i+1), "running.")
 
 		# Testing if agent can get into cart
-		for i in range(70):
+		for i in range(100):
 			print("use")
 			agent_host.sendCommand("use 1")
-			agent_host.sendCommand("use 0")
 			time.sleep(0.1)
 			if i == 30:				# To wait for cart to loop back before trying to get on again
 				time.sleep(5)
