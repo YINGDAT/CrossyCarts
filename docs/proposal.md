@@ -13,7 +13,7 @@ The goal of our project is to have the agent successfully cross the road by ridi
 We will be using reinforcement learning with tabular Q-learning. 
 
 ### Evaluation Plan
-Our game state is the surrent position of the agent and position of the carts on the track directly in front of the agent. The only action the agent can perform is moving forward. Some examples of metrics we will be using are +10 if the agent successfully reaches a safe zone, +1 if the agent can get on the minecart, -10 if it dies (the agent does not get off or does not get on the minecart), and -1 for missing a minecart and waiting for the next one. 
+Our game state is the current position of the agent and position of the carts on the track directly in front of the agent. The only action the agent can perform is moving forward. Some examples of metrics we will be using are +10 if the agent successfully reaches a safe zone, +1 if the agent can get on the minecart, -10 if it dies (the agent does not get off or does not get on the minecart), and -1 for missing a minecart and waiting for the next one. 
 
 ![useful image](sample_evaluation_table.png)
 
