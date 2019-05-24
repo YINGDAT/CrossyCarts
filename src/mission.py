@@ -17,13 +17,15 @@ def createTracks(n, length):
 	''' Creates n number of tracks/obstacles with minecarts for the agent to get through'''
 	drawTracks = ""
 	for i in range(n):
-		#random.seed(time.time())
 		goal = random.randint((-length//2), (length//2))
 		trackPos = (i*3)+1
 		if i == 0:
 			trackPos = i+1
 		safePos = trackPos+1
 		emptyPos = safePos+1
+		goal_block = "emerald_block"
+		if i == n-1:
+			goal_block = "diamond_block"
 		currTrack = '''	    
 							<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(trackPos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(trackPos) + '''" type="redstone_block"/>
 	                  		<DrawCuboid x1="''' + str(0-(length//2)-1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(0-(length//2)-1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
@@ -32,7 +34,7 @@ def createTracks(n, length):
 	                  		<DrawEntity x="''' + str(0-(length//2)) + '''" y="5" z="''' + str(trackPos) + '''" type="MinecartRideable"/>
 
 	                  		<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(safePos) + '''" type="quartz_block"/>
-	                  		<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(goal) + '''" y2="4" z2="''' + str(safePos) + '''" type="emerald_block"/>
+	                  		<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(goal) + '''" y2="4" z2="''' + str(safePos) + '''" type="''' + goal_block + '''"/>
 
 	                '''
 		drawTracks += currTrack
@@ -80,14 +82,37 @@ def GetMissionXML(n, length):
 					<ObservationFromGrid>
 					  <Grid name="floorAll">
 						<min x="0" y="0" z="0"/>
-						<max x="0" y="0" z="0"/>
+						<max x="0" y="1" z="1"/>
 					  </Grid>
 				  </ObservationFromGrid>
 				</AgentHandlers>
 			  </AgentSection>
 			</Mission>'''
 
+class CrossyAI:
+	def __init__(self, alpha=0.3, gamma=1, n=1, ai_host=None):
+		"""Constructing an RL agent.
+		Args
+			alpha:  <float>  learning rate      (default = 0.3)
+			gamma:  <float>  value decay rate   (default = 1)
+			n:      <int>    number of back steps to update (default = 1)
+		"""
+		self.epsilon = 0.2  # chance of taking a random action instead of the best
+		self.q_table = {}
+		self.n, self.alpha, self.gamma = n, alpha, gamma
+		self.agent_host = ai_host
 
+	def getObservations(self):
+		currState = self.agent_host.getWorldState()
+		if len(currState.observations) > 0:
+			msg = currState.observations[-1].text
+			observations = json.loads(msg)
+			grid = observations.get(u'floorAll', 0)
+			entity = observations.get(u'entities',0)
+			print(grid)
+			print(entity)
+
+	#def chooseAction(self, )
 
 if __name__ == '__main__':
 	agent_host = MalmoPython.AgentHost()
@@ -102,6 +127,7 @@ if __name__ == '__main__':
 		exit(0)
 
 	num_reps = 1
+	AI = CrossyAI(ai_host=agent_host)
 	for i in range(num_reps):
 
 		my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
@@ -139,24 +165,25 @@ if __name__ == '__main__':
 		print("Mission", (i+1), "running.")
 
 		# Testing if agent can get into cart
-		for i in range(40):
+		for i in range(15):
 			print("use")
 			agent_host.sendCommand("use 1")
 			agent_host.sendCommand("use 0")
 			time.sleep(0.1)
 
-		#agent_host.sendCommand("pitch 0.1")
-
-		#command = input("Send a command: ")
-		#agent_host.sendCommand(command)
-		
-		for i in range(100):
+		for i in range(5):
 			print("c")
 			agent_host.sendCommand("crouch 1")
 			agent_host.sendCommand("crouch 0")
-			#agent_host.sendCommand("jump 1")
-			#agent_host.sendCommand("jump 0")
-
-
 			time.sleep(0.1)
-		
+
+		for i in range(40):
+			print("moving")
+			agent_host.sendCommand("move 1")
+			agent_host.sendCommand("move 0")
+			time.sleep(0.1)
+
+			AI.getObservations()
+		print()
+		print("get obs:")
+		AI.getObservations()
