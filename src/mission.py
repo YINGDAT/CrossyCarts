@@ -13,11 +13,19 @@ import json
 import random
 import math
 
+'''
+Notes:
+- z = (i*3)+1 = on goal platforms 
+'''
+
+
 def createTracks(n, length):
 	''' Creates n number of tracks/obstacles with minecarts for the agent to get through'''
 	drawTracks = ""
+	goal_loc = [(length//2)//2, (0-(length//2))//2]		# only 2 non-random goal blocks for status report
 	for i in range(n):
-		goal = random.randint((-length//2), (length//2))
+		# random goal reserved for final report
+		goal = goal_loc[i]										#goal = random.randint((-length//2), (length//2))
 		trackPos = (i*3)+1
 		if i == 0:
 			trackPos = i+1
@@ -72,7 +80,7 @@ def GetMissionXML(n, length):
 			  <AgentSection mode="Survival">
 				<Name>CrossyCartsBot</Name>
 				<AgentStart>
-					<Placement x="0.4" y="7" z="0.65" yaw="0.5" pitch="-6"/>
+					<Placement x="0.4" y="5" z="0.65" yaw="0.5" pitch="-6"/>
 				</AgentStart>
 				<AgentHandlers>
 					<ContinuousMovementCommands turnSpeedDegs="180"/>
@@ -80,9 +88,13 @@ def GetMissionXML(n, length):
         	            <Range name="entities" xrange="20" yrange="2" zrange="2"/>
             	    </ObservationFromNearbyEntities>
 					<ObservationFromGrid>
-					  <Grid name="floorAll">
-						<min x="0" y="0" z="0"/>
-						<max x="0" y="1" z="1"/>
+					  <Grid name="floorAhead">
+						<min x="-4" y="0" z="1"/>
+						<max x="4" y="0" z="1"/>
+					  </Grid>
+					  <Grid name="floorUnder">
+						<min x="0" y="-1" z="0"/>
+						<max x="0" y="-1" z="0"/>
 					  </Grid>
 				  </ObservationFromGrid>
 				</AgentHandlers>
@@ -100,19 +112,85 @@ class CrossyAI:
 		self.epsilon = 0.2  # chance of taking a random action instead of the best
 		self.q_table = {}
 		self.n, self.alpha, self.gamma = n, alpha, gamma
+
 		self.agent_host = ai_host
 
-	def getObservations(self):
+	def get_observation(self, kind):
+		'''Get different world observations'''
 		currState = self.agent_host.getWorldState()
 		if len(currState.observations) > 0:
-			msg = currState.observations[-1].text
+			msg = currState.observations[0].text
 			observations = json.loads(msg)
-			grid = observations.get(u'floorAll', 0)
-			entity = observations.get(u'entities',0)
-			print(grid)
-			print(entity)
+			if kind == "ahead":
+				return observations.get(u'floorAhead', 0)
+			elif kind == "under":
+				return observations.get(u'floorUnder', 0)
+			elif kind == "entity":
+				return observations.get(u'entities', 0)
 
-	#def chooseAction(self, )
+	def get_curr_state(self):
+		'''Creates a unique identifier for a state (defined as the current
+		   position of the agent, or position of the minecart if agent is supposed
+		   to get on)
+				returns [x,y,z] coordinates rounded to ensure states are confined
+								to individual blocks
+				x: rounded to nearest integer
+				y: rounded to 4.7 for on cart
+				z: floor
+		'''
+		x = -1
+		y = -1
+		z = -1
+		entities = self.get_observation("entity")
+		if entities == None:
+			return #"World still rendering"
+		for e in entities:
+			if e.get('name') == 'CrossyCartsBot':
+				x = e.get('x')
+				y = e.get('y')
+				z = int(e.get('z'))
+				if int(z) == 0 and y > 4:
+					return #"Agent still falling"
+				if x >= 0:
+					x += 0.5
+				else:
+					x -= 0.5
+				x = int(x)
+				if y > 4.7 and y < 4.9:
+					y = 4.7
+				elif y != 4.0 and y != 5.0:
+					return #"Agent in air"
+			else:
+				if z % 3 == 0:
+					x = e.get('x')
+					if x >= 0:
+						x += 0.5
+					else:
+						x -= 0.5
+					x = int(x)
+		return [x,y,z]
+				
+	def get_possible_actions(self):
+		return ["use", "crouch", "move"]
+
+		'''
+	def get_possible_action(self, grid_entity):
+		if grid_entity[0][0] == "redstone_block":
+			return "use"
+		else if grid_entity[0][0] == "air":
+			return "move"
+		else:
+			return "use"
+			'''
+
+	#def act(self, action):
+	#	action = get_possible_action()
+	#	if action == "move":
+	#def run(self):
+
+		
+
+
 
 if __name__ == '__main__':
 	agent_host = MalmoPython.AgentHost()
@@ -130,7 +208,7 @@ if __name__ == '__main__':
 	AI = CrossyAI(ai_host=agent_host)
 	for i in range(num_reps):
 
-		my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
+		my_mission = MalmoPython.MissionSpec(GetMissionXML(2, 20), True)      #my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
 		my_mission_record = MalmoPython.MissionRecordSpec()
 		my_mission.requestVideo(800, 500)
 		my_mission.setViewpoint(1)
@@ -164,26 +242,29 @@ if __name__ == '__main__':
 		print()
 		print("Mission", (i+1), "running.")
 
+
+		#AI.get_possible_action
+
+		
 		# Testing if agent can get into cart
-		for i in range(15):
-			print("use")
+		print("USE")
+		for i in range(30):
 			agent_host.sendCommand("use 1")
 			agent_host.sendCommand("use 0")
+			print(AI.get_curr_state())
 			time.sleep(0.1)
 
+		print("\n\n\nCROUCH")
 		for i in range(5):
-			print("c")
 			agent_host.sendCommand("crouch 1")
 			agent_host.sendCommand("crouch 0")
+			print(AI.get_curr_state())
 			time.sleep(0.1)
 
-		for i in range(40):
-			print("moving")
+		print("\n\n\nMOVE")
+		for i in range(20):
 			agent_host.sendCommand("move 1")
-			agent_host.sendCommand("move 0")
 			time.sleep(0.1)
+			print(AI.get_curr_state())
 
-			AI.getObservations()
-		print()
-		print("get obs:")
-		AI.getObservations()
+			#AI.getObservations()
