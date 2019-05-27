@@ -12,20 +12,15 @@ import time
 import json
 import random
 import math
-
-'''
-Notes:
-- z = (i*3)+1 = on goal platforms 
-'''
+from collections import defaultdict, deque
+from copy import deepcopy
 
 
 def createTracks(n, length):
 	''' Creates n number of tracks/obstacles with minecarts for the agent to get through'''
 	drawTracks = ""
-	goal_loc = [(length//2)//2, (0-(length//2))//2]		# only 2 non-random goal blocks for status report
+	goal = -6 			# Set goal block
 	for i in range(n):
-		# random goal reserved for final report
-		goal = goal_loc[i]										#goal = random.randint((-length//2), (length//2))
 		trackPos = (i*3)+1
 		if i == 0:
 			trackPos = i+1
@@ -36,22 +31,22 @@ def createTracks(n, length):
 			goal_block = "diamond_block"
 		currTrack = '''	    
 							<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(trackPos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(trackPos) + '''" type="redstone_block"/>
-	                  		<DrawCuboid x1="''' + str(0-(length//2)-1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(0-(length//2)-1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
-	                  		<DrawCuboid x1="''' + str((length//2)+1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str((length//2)+1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
-	                  		<DrawLine x1="''' + str(0-(length//2)) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(length//2) + '''" y2="5" z2="''' + str(trackPos) + '''" type="golden_rail"/>
-	                  		<DrawEntity x="''' + str(0-(length//2)) + '''" y="5" z="''' + str(trackPos) + '''" type="MinecartRideable"/>
+							<DrawCuboid x1="''' + str(0-(length//2)-1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(0-(length//2)-1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
+							<DrawCuboid x1="''' + str((length//2)+1) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str((length//2)+1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="obsidian"/>
+							<DrawLine x1="''' + str(0-(length//2)) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str(length//2) + '''" y2="5" z2="''' + str(trackPos) + '''" type="golden_rail"/>
+							<DrawEntity x="''' + str(0-(length//2)) + '''" y="5" z="''' + str(trackPos+0.5) + '''" type="MinecartRideable"/>
 
-	                  		<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(safePos) + '''" type="quartz_block"/>
-	                  		<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(goal) + '''" y2="4" z2="''' + str(safePos) + '''" type="''' + goal_block + '''"/>
+							<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(length//2) + '''" y2="4" z2="''' + str(safePos) + '''" type="quartz_block"/>
+							<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(goal) + '''" y2="4" z2="''' + str(safePos) + '''" type="''' + goal_block + '''"/>
 
-	                '''
+					'''
 		drawTracks += currTrack
 	return '''<DrawingDecorator>
-    					''' + drawTracks + '''
-    		  </DrawingDecorator>'''
+						''' + drawTracks + '''
+			  </DrawingDecorator>'''
 
 
-def GetMissionXML(n, length):
+def GetMissionXML(n, length, agent_x):
 	return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 			<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -69,10 +64,8 @@ def GetMissionXML(n, length):
 			  </ServerInitialConditions>
 
 			  <ServerHandlers>
-				  <FlatWorldGenerator generatorString="biome_1" />
-				  ''' + createTracks(n,length) + '''
-
-				  <ServerQuitFromTimeUp timeLimitMs="10000"/>
+				  <FlatWorldGenerator generatorString="biome_1" forceReset="true" />
+				  ''' + createTracks(n, length) + '''
 				  <ServerQuitWhenAnyAgentFinishes/>
 				</ServerHandlers>
 			  </ServerSection>
@@ -80,13 +73,13 @@ def GetMissionXML(n, length):
 			  <AgentSection mode="Survival">
 				<Name>CrossyCartsBot</Name>
 				<AgentStart>
-					<Placement x="0.4" y="5" z="0.65" yaw="0.5" pitch="-6"/>
+					<Placement x="'''+ str(agent_x) +'''" y="5" z="0.5" yaw="0.5" pitch="-6"/>
 				</AgentStart>
 				<AgentHandlers>
-					<ContinuousMovementCommands turnSpeedDegs="180"/>
-    	            <ObservationFromNearbyEntities>
-        	            <Range name="entities" xrange="20" yrange="2" zrange="2"/>
-            	    </ObservationFromNearbyEntities>
+					<ContinuousMovementCommands turnSpeedDegs="480"/>
+					<ObservationFromNearbyEntities>
+						<Range name="entities" xrange="20" yrange="2" zrange="2"/>
+					</ObservationFromNearbyEntities>
 					<ObservationFromGrid>
 					  <Grid name="floorAhead">
 						<min x="-4" y="0" z="1"/>
@@ -96,106 +89,130 @@ def GetMissionXML(n, length):
 						<min x="0" y="-1" z="0"/>
 						<max x="0" y="-1" z="0"/>
 					  </Grid>
-				  </ObservationFromGrid>
+					</ObservationFromGrid>
+					<AbsoluteMovementCommands/>
+					<MissionQuitCommands/>
+					<ChatCommands/>
 				</AgentHandlers>
 			  </AgentSection>
 			</Mission>'''
 
-class CrossyAI:
-	def __init__(self, alpha=0.3, gamma=1, n=1, ai_host=None):
-		"""Constructing an RL agent.
-		Args
-			alpha:  <float>  learning rate      (default = 0.3)
-			gamma:  <float>  value decay rate   (default = 1)
-			n:      <int>    number of back steps to update (default = 1)
-		"""
-		self.epsilon = 0.2  # chance of taking a random action instead of the best
-		self.q_table = {}
-		self.n, self.alpha, self.gamma = n, alpha, gamma
+q_table = {}
+epsilon = 0.35
 
-		self.agent_host = ai_host
+def get_observation(host, kind):
+	'''Get different world observations'''
+	current_state = host.getWorldState()
+	if len(current_state.observations) > 0:
+		msg = current_state.observations[0].text
+		observations = json.loads(msg)
+		if kind == "ahead":
+			return observations.get(u'floorAhead', 0)
+		elif kind == "under":
+			block_under = observations.get(u'floorUnder', 0)
+			return block_under
+		elif kind == "entity":
+			return observations.get(u'entities', 0)
 
-	def get_observation(self, kind):
-		'''Get different world observations'''
-		currState = self.agent_host.getWorldState()
-		if len(currState.observations) > 0:
-			msg = currState.observations[0].text
-			observations = json.loads(msg)
-			if kind == "ahead":
-				return observations.get(u'floorAhead', 0)
-			elif kind == "under":
-				return observations.get(u'floorUnder', 0)
-			elif kind == "entity":
-				return observations.get(u'entities', 0)
-
-	def get_curr_state(self):
-		'''Creates a unique identifier for a state (defined as the current
-		   position of the agent, or position of the minecart if agent is supposed
-		   to get on)
-				returns [x,y,z] coordinates rounded to ensure states are confined
-								to individual blocks
-				x: rounded to nearest integer
-				y: rounded to 4.7 for on cart
-				z: floor
-		'''
-		x = -1
-		y = -1
-		z = -1
-		entities = self.get_observation("entity")
-		if entities == None:
-			return #"World still rendering"
-		for e in entities:
-			if e.get('name') == 'CrossyCartsBot':
-				x = e.get('x')
-				y = e.get('y')
-				z = int(e.get('z'))
-				if int(z) == 0 and y > 4:
-					return #"Agent still falling"
-				if x >= 0:
-					x += 0.5
-				else:
-					x -= 0.5
-				x = int(x)
-				if y > 4.7 and y < 4.9:
-					y = 4.7
-				elif y != 4.0 and y != 5.0:
-					return #"Agent in air"
+def get_current_x_state(host):
+	entities = []
+	while len(entities) == 0:
+		try:
+			entities.extend(get_observation(host, "entity"))
+		except:
+			time.sleep(0.1)
+	for e in entities:
+		if e.get('name') == 'CrossyCartsBot':	
+			x = e.get('x')
+			if x >= 0:
+				return int(x+0.5)
 			else:
-				if z % 3 == 0:
-					x = e.get('x')
-					if x >= 0:
-						x += 0.5
-					else:
-						x -= 0.5
-					x = int(x)
-		return [x,y,z]
-				
-	def get_possible_actions(self):
-		return ["use", "crouch", "move"]
+				return int(x-0.5)
 
-		'''
-	def get_possible_action(self, grid_entity):
-		if grid_entity[0][0] == "redstone_block":
-			return "use"
-		else if grid_entity[0][0] == "air":
-			return "move"
+def get_current_z_state(host):
+	entities = []
+	while len(entities) == 0:
+		try:
+			entities.extend(get_observation(host, "entity"))
+		except:
+			time.sleep(0.1)
+	for e in entities:
+		if e.get('name') == 'CrossyCartsBot':
+			return e.get('z')
+
+def get_possible_actions():
+	return ["crouch", "nothing"]
+
+def choose_action(curr_state, possible_actions, eps):
+	if curr_state not in q_table:
+		q_table[curr_state] = {}
+	for action in possible_actions:
+		if action not in q_table[curr_state]:
+			q_table[curr_state][action] = 0
+	if q_table[curr_state]['crouch'] == 0:
+		return "crouch"
+	elif curr_state in range(-1, -9) and q_table[curr_state]['crouch'] == -10:		# Takes care of case where a state might work even if previously failed
+		 rnd = random.random()
+		 print("random #: ", rnd)
+		 if rnd <= epsilon:
+		 	return "crouch"
+	else:
+		return "nothing"
+
+
+def crouch(host, curr_state, action):
+	command_executed = False
+	while not command_executed:
+		host.sendCommand("crouch 1")
+		time.sleep(0.2)
+		host.sendCommand("crouch 0")
+
+		if get_current_z_state(host) > 2:
+			if get_current_x_state(host) == -5:
+				q_table[curr_state][action] = 10
+				return 10
+			else:
+				q_table[curr_state][action] = -10
+				return -10
+			command_executed = True
+
+def act(host, curr_state, action):
+	if action == "nothing":
+		q_table[curr_state][action] = 0
+		return 0
+	else:
+		return crouch(host, curr_state, action)
+
+def run(host, curr_state):
+	S, A, R = deque(), deque(), deque()
+	done_updating = False
+	while not done_updating:
+		s0 = curr_state
+		a0 = choose_action(s0, get_possible_actions() ,epsilon)
+		S.append(s0)
+		A.append(a0)
+		R.append(0)
+
+		current_r = act(host, curr_state, a0)
+		R.append(current_r)
+
+		if current_r == -10 or current_r == 10:
+			return True
 		else:
-			return "use"
-			'''
+			return False
 
-	#def act(self, action):
-	#	action = get_possible_action()
-	#	if action == "move":
-	#def run(self):
+		done_updating = True
 
-		
+
+
 
 
 
 if __name__ == '__main__':
+
 	agent_host = MalmoPython.AgentHost()
 	try:
-		agent_host.parse( sys.argv )
+		agent_host.parse(sys.argv)
 	except RuntimeError as e:
 		print('ERROR:',e)
 		print(agent_host.getUsage())
@@ -204,33 +221,36 @@ if __name__ == '__main__':
 		print(agent_host.getUsage())
 		exit(0)
 
-	num_reps = 1
-	AI = CrossyAI(ai_host=agent_host)
-	for i in range(num_reps):
+	solution_found = False
+	i = 0
+	while not solution_found:
+		time.sleep(1)
 
-		my_mission = MalmoPython.MissionSpec(GetMissionXML(2, 20), True)      #my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
+		my_mission = MalmoPython.MissionSpec(GetMissionXML(1, 20,random.randint(-7,7)), True)      #my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
 		my_mission_record = MalmoPython.MissionRecordSpec()
 		my_mission.requestVideo(800, 500)
 		my_mission.setViewpoint(1)
+		if i > 0:
+			agent_host.sendCommand("tp 0.5 " + str(4+(i*15)) + " 0.5")
 
 		# Attempt to start a mission:
-		max_retries = 3
-		my_clients = MalmoPython.ClientPool()
-		my_clients.add(MalmoPython.ClientInfo('127.0.0.1', 10000)) # add Minecraft machines here as available
 
+		my_client_pool = MalmoPython.ClientPool()
+		my_client_pool.add(MalmoPython.ClientInfo("127.0.0.1", 10000))
+		max_retries = 3
 		for retry in range(max_retries):
 			try:
-				agent_host.startMission( my_mission, my_clients, my_mission_record, 0, "%s-%d" % ('Moshe', i) )
+				agent_host.startMission(my_mission, my_client_pool, my_mission_record, 0, "CrossyAI")
 				break
 			except RuntimeError as e:
 				if retry == max_retries - 1:
-					print("Error starting mission", (i+1), ":",e)
+					print("Error starting trial", (i+1), ":",e)
 					exit(1)
 				else:
 					time.sleep(2)
-
+		time.sleep(0.1)
 		# Loop until mission starts:
-		print("Waiting for the mission", (i+1), "to start ",)
+		print("Waiting for trial", (i+1), "to start ",)
 		world_state = agent_host.getWorldState()
 		while not world_state.has_mission_begun:
 			#sys.stdout.write(".")
@@ -240,31 +260,29 @@ if __name__ == '__main__':
 				print("Error:",error.text)
 
 		print()
-		print("Mission", (i+1), "running.")
+		print("Trial", (i+1), "running.")
 
-
-		#AI.get_possible_action
-
-		
-		# Testing if agent can get into cart
-		print("USE")
-		for i in range(30):
+		# Get on minecart
+		on_minecart = False
+		while not on_minecart:
 			agent_host.sendCommand("use 1")
+			time.sleep(0.1)
 			agent_host.sendCommand("use 0")
-			print(AI.get_curr_state())
-			time.sleep(0.1)
+			if get_current_z_state(agent_host) > 1:
+				on_minecart = True
+		time.sleep(0.1)
 
-		print("\n\n\nCROUCH")
-		for i in range(5):
-			agent_host.sendCommand("crouch 1")
-			agent_host.sendCommand("crouch 0")
-			print(AI.get_curr_state())
-			time.sleep(0.1)
+		if on_minecart:
+			off_minecart = False
+			while not off_minecart:
+				off_minecart = run(agent_host, get_current_x_state(agent_host))
+				print(q_table)
+				time.sleep(0.1)
+		if get_current_x_state(agent_host) == -6:
+			break
 
-		print("\n\n\nMOVE")
-		for i in range(20):
-			agent_host.sendCommand("move 1")
-			time.sleep(0.1)
-			print(AI.get_curr_state())
+		i += 1
+		print("TRIAL FAILED: -10")
+		agent_host.sendCommand("quit")
 
-			#AI.getObservations()
+	print("Mission Successful")
