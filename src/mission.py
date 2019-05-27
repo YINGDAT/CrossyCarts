@@ -226,7 +226,7 @@ if __name__ == '__main__':
 	while not solution_found:
 		time.sleep(1)
 
-		my_mission = MalmoPython.MissionSpec(GetMissionXML(1, 20,random.randint(-7,7)), True)      #my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
+		my_mission = MalmoPython.MissionSpec(GetMissionXML(1, 20, 1), True)      #my_mission = MalmoPython.MissionSpec(GetMissionXML(random.randint(1,10), 20), True)
 		my_mission_record = MalmoPython.MissionRecordSpec()
 		my_mission.requestVideo(800, 500)
 		my_mission.setViewpoint(1)
