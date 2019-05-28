@@ -8,22 +8,21 @@ title:  Status
 <iframe width="560" height="315" src="https://www.youtube.com/embed/my8mlsEsDHk?rel=0&amp;showinfo=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Project Summary
-CrossyCarts is a Minecraft AI agent that plays a modified version of Crossy Road by Hipster Whale (or Frogger by Konami). In our version, minecarts move back and forth on a 20 block track. The agent, CrossyCartsBot, has 3 actions to choose from at any state of the game: crouch, use, or nothing. When trying to get on a minecart, the agent should “use”. When trying to get off at the goal block, if it gets off (crouch) at the wrong spot or chooses the wrong action it dies. Eventually, the AI learns the best possible action to take at any given point and can successfully cross the road by getting on and off minecarts at the right time.
+CrossyCarts is a Minecraft AI agent that plays a modified version of CrossyRoad by Hipster Whale (or Frogger by Konami). In our version, minecarts move back and forth on a 20 block track. The agent, CrossyCartsBot, has 3 actions to choose from: crouch, use, or nothing. When trying to get on a minecart, the agent should “use”. When trying to get off at the goal block, if it gets off (crouch) at the wrong spot or chooses the wrong action it dies. Eventually, the AI learns the best possible action to take at any given point and can successfully cross the road by getting on and off minecarts at the right time.
 
 ### Approach
-The main function being used is run, which takes the agent host and current state as parameters. When run is called, it keeps choosing actions and updating the q-table until the agent reaches the goal block. The q-table is updated based on the action chosen by the agent. There are 20 different states, which depend on the location of the agent. In addition, there are two different actions to choose from, ‘crouch’ and ‘nothing’. If ‘nothing is chosen, the update looks like: q_table[curr_state][action] = 0, otherwise if ‘crouch’ is chosen, q_table[curr_state][action] is updated based on whether or not the agent got off at the goal block or not.
+Our program uses tabular Q-learning to determine the best action to perform at every game state. The q-table is updated based on the action chosen by the agent. For our prototype, there are 20 different states which depend on the x-position of the agent in each block of the track. In addition, there are two actions to choose from: ‘crouch’ or ‘nothing’. If ‘nothing’ is chosen, the update looks like: q_table[curr_state][action] = 0, otherwise if ‘crouch’ is chosen, q_table[curr_state][action] is updated based on whether or not the agent got off at the goal block or not (+10 if goal block, -10 if not). Our program runs several trials, choosing actions and updating the q-table until the agent reaches the goal block.
 
-Some other important functions that are called while running the program are act, which takes the agent host, current state, and action as parameters. It performs the action and updates the q-table based on whether the action is ‘crouch’ or ‘nothing’. The function get_observation returns the observations of the floor ahead, floor under, or entities. Get_current_x_state and get_current_z_state return the state of the agent in the x and z directions. Finally, choose_action, returns the action the agent should choose from a list of possible actions and is implemented using an epsilon-greedy policy. 
-
+The 20 states we created for our q-table does not reflect the actual amount of states in the game since movement is continuous. For example, the agent may actually be at x-position 1.258 when it is performing for state 1. Because of this, the q-table may sometimes mark a state with crouch: -10 incorrectly. For example, getting off while at x-position 1.258 may not land on the goal block, but getting off at x-position 1.498 does. To take care of these cases, our choose_action function is implemented using an epsilon-greedy policy so that the AI has a chance to retry getting off at states near the goal block. 
 
 ### Evaluation
-# Quantitative Evaluation:
+###### Quantitative Evaluation:
 The q-table is updated based on the action which is performed. If the agent chooses to do ‘nothing’, then the the q-table is updated with the value 0. If the agent chooses to ‘crouch’, the q-table is updated based on if the agent gets off at the goal block or not. If the agent does successfully dismount at the goal block, then the q-table is updated with the value +10. Otherwise, the q-table is updated with the value -10. 
 
 Example of q-table during a trial:
 ![useful image](status_q_table.png)
 
-# Qualitative Evaluation:
+###### Qualitative Evaluation:
 In our proposal, we stated that our baseline for success was if the agent could successfully mount and dismount the minecart, which it is able to do. In addition, the AI is able to determine the goal block and dismount at that location after around 14 trials. 
 
 Example Run:
