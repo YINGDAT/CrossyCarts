@@ -16,14 +16,14 @@ Our program uses tabular Q-learning to determine the best action to perform at e
 The 20 states we created for our q-table does not reflect the actual amount of states in the game since movement is continuous. For example, the agent may actually be at x-position 1.258 when it is performing for state 1. Because of this, the q-table may sometimes mark a state with crouch: -10 incorrectly. For example, getting off while at x-position 1.258 may not land on the goal block, but getting off at x-position 1.498 does. To take care of these cases, our choose_action function is implemented using an epsilon-greedy policy so that the AI has a chance to retry getting off at states near the goal block. 
 
 ### Evaluation
-##### Quantitative Evaluation:
+**Quantitative Evaluation:**
 The q-table is updated based on the action which is performed. If the agent chooses to do ‘nothing’, then the the q-table is updated with the value 0. If the agent chooses to ‘crouch’, the q-table is updated based on if the agent gets off at the goal block or not. If the agent does successfully dismount at the goal block, then the q-table is updated with the value +10. Otherwise, the q-table is updated with the value -10. 
 
 Example of q-table during a trial:
 ![useful image](status_q_table.png)
 
 
-##### Qualitative Evaluation:
+**Qualitative Evaluation:**
 In our proposal, we stated that our baseline for success was if the agent could successfully mount and dismount the minecart, which it is able to do. In addition, the AI is able to determine the goal block and dismount at that location after about 14 trials. 
 
 Example Run:
@@ -42,7 +42,9 @@ The agent after dismounting the cart.
 
 
 ### Remaining Goals and Challenges
-Our current implementation is confined to one track with a set goal block. It also only creates states depending on the x position it is currently on. Ideally, we want our AI to be able to complete missions that have several more tracks and randomized goal blocks. In order to achieve this, we would have to create additional states depending on the velocity of the cart which would mean there would be 40 states for each track instead of 20. We would also need to change the way we store states in the q-table so that stored values are not specific to predetermined goal blocks.
+Our current implementation is confined to one track with a set goal block. It also only creates states depending on the x-position of the block it is currently on. Ideally, we want our AI to be able to complete missions that have several more tracks and randomized goal blocks. In order to achieve this, we would have to create additional states depending on the velocity of the cart which would mean there would be 40 states for each track instead of 20. We would also need to change the way we store states in the q-table so that stored values are not specific to predetermined goal blocks.
+
+We also aim to visually show that the agent dies when it performs the wrong action instead of simply starting a new trial. The most challenging part of the project so far has been understanding how to use Malmo to get information and perform necessary actions. We had a lot of problems with reliably getting entity information, so we anticipate that the greatest challenge will be figuring out exactly how to implement these changes.
 
 Example future mission:
 
