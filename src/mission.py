@@ -105,7 +105,7 @@ def GetMissionXML(n_tracks, length, goal_blocks):
 			</Mission>'''
 
 q_table = {}
-epsilon = 0.05
+epsilon = 0.04
 
 def get_observation(host, kind):
 	'''Get different world observations'''
@@ -177,10 +177,10 @@ def get_possible_actions():
 	return ["crouch", "nothing"]
 
 def choose_action(curr_state, possible_actions, eps):
-	print("CHOOSE ACTION STATE: ", curr_state)
+	print("CHOOSE_ACTION STATE: ", curr_state)
 	sol_found = False
 	for v in q_table.values():
-		if v.get('crouch') == 10:
+		if v.get('crouch') >= 10:
 			sol_found = True
 
 	if curr_state not in q_table:
@@ -199,7 +199,7 @@ def choose_action(curr_state, possible_actions, eps):
 		else:
 			return "crouch"
 	elif q_value < 0:		# Takes care of case where a state might work even if previously failed
-		percentage = epsilon - (0.01*abs((q_value+10)))		# -5% per -1 past -10
+		percentage = epsilon - (0.02*abs((q_value+10)))		# -5% per -1 past -10
 		rnd = random.random()
 		print("random #: ", rnd)
 
@@ -218,7 +218,7 @@ def crouch(host, curr_state, action):
 
 		if get_current_z_state(host) > 2:
 			if get_block_under(host) == "emerald_block":
-				q_table[curr_state][action] = 10
+				q_table[curr_state][action] += 10
 				return 10
 			else:
 				if q_table[curr_state][action] == 0:
@@ -241,7 +241,7 @@ def run(host, curr_state):
 	done_updating = False
 	while not done_updating:
 		s0 = curr_state
-		a0 = choose_action(s0, get_possible_actions() ,epsilon)
+		a0 = choose_action(s0, get_possible_actions(), epsilon)
 		S.append(s0)
 		A.append(a0)
 		R.append(0)
@@ -266,7 +266,6 @@ def get_on_minecart(host):
 		continue
 	host.sendCommand("move 0")
 	# Get on minecart
-	print("getting on minecart")
 	while not on_minecart:
 		host.sendCommand("use 1")
 		time.sleep(0.1)
@@ -280,6 +279,7 @@ def get_on_minecart(host):
 
 
 if __name__ == '__main__':
+	# Prompt user to provide track numbers
 	print("\nCrossyCart is a Minecraft AI that gets on minecarts and gets off at destination blocks in order to cross the road.")
 	while type(num_tracks) != int:
 		try:
@@ -287,7 +287,6 @@ if __name__ == '__main__':
 		except:
 			print("Please enter an integer\n")
 			continue
-
 
 	agent_host = MalmoPython.AgentHost()
 	try:
@@ -300,13 +299,15 @@ if __name__ == '__main__':
 		print(agent_host.getUsage())
 		exit(0)
 
-	goal_blocks = []				# x-coord of random goal block
+	# Create randomized goal blocks
+	goal_blocks = []
 	for n in range(num_tracks):
 		goal_blocks.append(random.randint((-track_length//2+1), (track_length//2)-2))
 
 	mission_complete = False
 	restarting = True
-	i = 0
+	i = 0	# Trial number
+	tracks_completed = 0
 	while not mission_complete:
 		# Only restarts the whole mission if agent dies (after initial start)
 		if restarting:
@@ -344,26 +345,39 @@ if __name__ == '__main__':
 			print("Trial", (i+1), "running.")
 
 			restarting = False
+			tracks_completed = 0
 
 		# Get on minecart
 		on_minecart = get_on_minecart(agent_host)
+
+		print("goal_block: ", goal_blocks[tracks_completed])
 
 		# Choose action on minecart
 		if on_minecart:
 			off_minecart = False
 			while not off_minecart:
-				off_minecart = run(agent_host, (get_current_x_state(agent_host), get_current_travel_direction(agent_host)))
+				distance_from_goal = 0
+				current_x = get_current_x_state(agent_host)
+				# If curr_x is right of goal block, set its distance away as negative, otherwise set distance as positive
+				print("curr_x: ",current_x)
+				if goal_blocks[tracks_completed] > current_x:
+					distance_from_goal = -(abs(goal_blocks[tracks_completed]-current_x))
+				elif goal_blocks[tracks_completed] < current_x:
+					distance_from_goal = abs(goal_blocks[tracks_completed] - current_x)
+				#print("curr_x: ",get_current_x_state(agent_host))
+				print(distance_from_goal)
+				off_minecart = run(agent_host, (distance_from_goal, get_current_travel_direction(agent_host)))
 				print(q_table)
 				time.sleep(0.1)
 
 		if get_block_under(agent_host) == "diamond_block":		# Completed all tracks
 			mission_complete = True
 		elif get_block_under(agent_host) == "emerald_block":	# Completed current track
-			pass
+			tracks_completed += 1
 		else:													# Agent died and has to restart
 			restarting = True
+			print("TRIAL ", i, " FAILED")
 			i += 1
-			print("TRIAL FAILED: -10")
 			agent_host.sendCommand("quit")
 
 	print("Mission Successful")
