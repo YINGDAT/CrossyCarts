@@ -39,8 +39,6 @@ def createTracks(n, length, goal_blocks):
 							<DrawLine x1="''' + str(0-(length//2)) + '''" y1="5" z1="''' + str(trackPos) + '''" x2="''' + str((length//2)-1) + '''" y2="5" z2="''' + str(trackPos) + '''" type="golden_rail"/>
 
 							<DrawCuboid x1="''' + str(0-(length//2)) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str((length//2)-1) + '''" y2="4" z2="''' + str(safePos) + '''" type="netherrack"/>
-							<DrawCuboid x1="''' + str(0-(length//2)-1) + '''" y1="5" z1="''' + str(safePos) + '''" x2="''' + str(goal-1) + '''" y2="5" z2="''' + str(safePos) + '''" type="fire"/>
-							<DrawCuboid x1="''' + str(goal+1) + '''" y1="5" z1="''' + str(safePos) + '''" x2="''' + str(length//2) + '''" y2="5" z2="''' + str(safePos) + '''" type="fire"/>
 							<DrawCuboid x1="''' + str(goal) + '''" y1="4" z1="''' + str(safePos) + '''" x2="''' + str(goal) + '''" y2="4" z2="''' + str(safePos) + '''" type="''' + goal_block + '''"/>
 					'''
 		drawTracks += currTrack
@@ -102,7 +100,10 @@ def GetMissionXML(n_tracks, length, goal_blocks):
 					<ChatCommands/>
 				</AgentHandlers>
 			  </AgentSection>
+
 			</Mission>'''
+
+
 
 q_table = {}
 epsilon = 0.04
@@ -177,12 +178,7 @@ def get_possible_actions():
 	return ["crouch", "nothing"]
 
 def choose_action(curr_state, possible_actions, eps):
-	print("CHOOSE_ACTION STATE: ", curr_state)
-	sol_found = False
-	for v in q_table.values():
-		if v.get('crouch') >= 10:
-			sol_found = True
-
+	# Creates state if not in q-table
 	if curr_state not in q_table:
 		q_table[curr_state] = {}
 	for action in possible_actions:
@@ -190,24 +186,41 @@ def choose_action(curr_state, possible_actions, eps):
 			q_table[curr_state][action] = 0
 
 	q_value = q_table[curr_state]['crouch']
+	rnd = random.random()
+	percentage = epsilon - (0.02*abs(q_value+10))
+	print("CHOOSE_ACTION STATE: ", curr_state)
+	#print(curr_state[-1])			# printing direction
+	
+	# Check q_table to see if there's a solution
+	leftSol_found = False
+	rightSol_found = False
+	for k,v in q_table.items():
+		if v.get('crouch') >= 10:
+			if k[-1] == "left":
+				leftSol_found = True
+			else:
+				rightSol_found = True
 
-	if q_value == 10:
+	if q_value >= 10:							# if worked in the past, crouch again
 		return "crouch"
-	elif q_value == 0:
-		if sol_found:
-			return "nothing"
-		else:
+	elif q_value < 10 and q_value > 0:
+		if rnd <= (0.75-((10-q_value)*0.15)):	# if solution failed, 75% to try again -15% per additional failure 
 			return "crouch"
+	elif q_value == 0:
+		if (curr_state[-1] == "left"):
+			if leftSol_found and rnd <= 0.98:	# if left sol. found, 2% chance of not waiting to get off at sol block
+				pass
+			else:
+				return "crouch"
+		elif (curr_state[-1] == "right"):
+			if rightSol_found and rnd <= 0.98:
+				pass
+			else:
+				return "crouch"
 	elif q_value < 0:		# Takes care of case where a state might work even if previously failed
-		percentage = epsilon - (0.02*abs((q_value+10)))		# -5% per -1 past -10
-		rnd = random.random()
-		print("random #: ", rnd)
-
-
 		if rnd <= percentage:
 			return "crouch"
-		else:
-			return "nothing"
+	return "nothing"
 
 def crouch(host, curr_state, action):
 	command_executed = False
@@ -216,7 +229,7 @@ def crouch(host, curr_state, action):
 		time.sleep(0.2)
 		host.sendCommand("crouch 0")
 
-		if get_current_z_state(host) > 2:
+		if get_current_z_state(host) % 3 == 2.500:
 			if get_block_under(host) == "emerald_block":
 				q_table[curr_state][action] += 10
 				return 10
@@ -261,8 +274,7 @@ def get_on_minecart(host):
 	# Move forward until in position to get on minecart
 	host.sendCommand("move 1")
 	#print(get_current_z_state(host))
-	while int(get_current_z_state(host)) % 3 != 0:
-		print("in loop: ", str(get_current_z_state(host)))		
+	while int(get_current_z_state(host)) % 3 != 0:	
 		continue
 	host.sendCommand("move 0")
 	# Get on minecart
@@ -347,6 +359,8 @@ if __name__ == '__main__':
 			restarting = False
 			tracks_completed = 0
 
+		agent_host.sendCommand("look -1")
+
 		# Get on minecart
 		on_minecart = get_on_minecart(agent_host)
 
@@ -365,7 +379,7 @@ if __name__ == '__main__':
 				elif goal_blocks[tracks_completed] < current_x:
 					distance_from_goal = abs(goal_blocks[tracks_completed] - current_x)
 				#print("curr_x: ",get_current_x_state(agent_host))
-				print(distance_from_goal)
+				print("distance from goal_block: ", distance_from_goal)
 				off_minecart = run(agent_host, (distance_from_goal, get_current_travel_direction(agent_host)))
 				print(q_table)
 				time.sleep(0.1)
@@ -376,7 +390,7 @@ if __name__ == '__main__':
 			tracks_completed += 1
 		else:													# Agent died and has to restart
 			restarting = True
-			print("TRIAL ", i, " FAILED")
+			print("TRIAL ", i+1, " FAILED")
 			i += 1
 			agent_host.sendCommand("quit")
 
