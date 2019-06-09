@@ -42,10 +42,16 @@ After running the program, the user is prompted to enter a number of tracks that
 <u>States:</u>
 Our states are stored as a tuple of (distance_from_goal, current_velocity).
 
-distance_from_goal
-* The distance_from_goal only focuses on the x-coordinate difference (left ↔ right) because that is the only factor that plays into when the agent should get off the minecart. Movement in Minecraft is continuous, not block-by-block, so x-position values provided by Malmo are float values. Obviously, using this would create too many states for our q-table, so we rounded states to the nearest int.
+&nbsp; distance_from_goal
+* The distance_from_goal only focuses on the x-coordinate difference (left ↔ right) because that is the only factor that plays into when the agent should get off the minecart. Movement in Minecraft is continuous, not block-by-block, so x-position values provided by Malmo are float values. Obviously, using this would create too many states for our q-table, so we rounded states to the nearest integer value.
+{% raw %}
+$$  if x >= 0:
+        return int(x + 0.5) 
+    else:
+        return int(x -0.5) $$
+{% endraw %}
     
-current_velocity
+&nbsp; current_velocity
 * .
     
 <u>Rewards:</u>
