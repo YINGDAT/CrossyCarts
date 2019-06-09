@@ -29,6 +29,21 @@ Minecarts typically have a predefined speed of 8 m/s. In our CrossyCart game, ho
 
 ## Approaches
 
+In our previous report we created an AI that was able to eventually complete 1 track with a predetermined goal block which served as our baseline. Since then, we have randomized the position of the goal block and changed our states and rewards in order to create an AI that is able to complete multiple tracks with different goal blocks.
+
+Our AI automatically gets into position to get on the minecart and gets on the minecart. The main problem lies in when it decides to get off of the minecart. We chose to use q-tabular reinforcement learning because there is a moderate number of states with only two actions to choose from: get off (crouch) or nothing. Since q-learning is model free, we are also able to see the agent learn to complete the track and handle stochastic transitions (ex. changes in speed while riding).
+
+**Track Set-up**
+
+After running the program, the user is prompted to enter a number of tracks that the agent will have to cross. This inputted number is used to create n number of 20-block tracks each with its own randomized goal block. The x-coordinate of the randomized goal blocks for each track is stored in an array to create our states later.
+
+**Q-Tabular Learning**
+
+-States
+    *Our
+* Rewards
+
+
 ## Evaluation
 
 ## References
