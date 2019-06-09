@@ -39,8 +39,13 @@ After running the program, the user is prompted to enter a number of tracks that
 
 **Q-Tabular Learning**
 
--States
-    *Our
+* States
+    * Our states are stored as a tuple of (distance_from_goal, current_velocity).
+    
+    distance_from_goal
+    
+    current_velocity
+    
 * Rewards
 
 
