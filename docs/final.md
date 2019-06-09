@@ -10,6 +10,8 @@ CrossyCart is an Minecraft adaptation of the games Crossy Road™ and Frogger™
 In this version, the player must get on minecarts and get off of them at the right time in order to safely cross the tracks. Minecarts move back and forth along a 20 block minecart track with randomized safe drop-off points. If the player gets off at the wrong time they will be engulfed by flames and die.
 
 ![Alt Text](img/example_success.gif)   ![Alt Text](img/example_failure.gif)
+<img src="img/example_failure.gif" width="391" height="181" />
+
 
 The player’s current position and velocity in the minecart are factors to consider when determining when to get off. Since the player in the minecart will always be moving even when it decides to get off the minecart, it should decide to get off a couple blocks away from the goal because by the time their action is executed their position would have changed (hopefully to where the safe block is).
 
