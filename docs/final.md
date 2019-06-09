@@ -12,11 +12,13 @@ In this version, the player must get on minecarts and get off of them at the rig
 
 <center>
 
-Figure 1: Examples of successful (left) and unsuccessful (right) gameplay
+**Figure 1: Examples of successful (left) and unsuccessful (right) gameplay
+
 
 <img src="img/example_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
 
 </center>
+
 
 The player’s current position and velocity in the minecart are factors to consider when determining when to get off. Since the player in the minecart will always be moving even when it decides to get off the minecart, it should decide to get off a couple blocks away from the goal because by the time their action is executed their position would have changed (hopefully to where the safe block is).
 
