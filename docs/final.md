@@ -12,7 +12,7 @@ In this version, the player must get on minecarts and get off of them at the rig
 
 <p align="center">
 
-**Figure 1: Examples of successful (left) and unsuccessful (right) gameplay**
+<strong>Figure 1: Examples of successful (left) and unsuccessful (right) gameplay</strong>
 
 </p>
 
@@ -43,6 +43,7 @@ After running the program, the user is prompted to enter a number of tracks that
     * Our states are stored as a tuple of (distance_from_goal, current_velocity).
     
     distance_from_goal
+        * The distance_from_goal only focuses on the x-coordinate difference (left ↔ right) because that is the only factor that plays into when the agent should get off the minecart. Movement in Minecraft is continuous, not block-by-block, so x-position values provided by Malmo are float values. Obviously, using this would create too many states for our q-table, so we rounded to the nearest int
     
     current_velocity
     
