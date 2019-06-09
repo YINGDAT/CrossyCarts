@@ -20,7 +20,7 @@ The 20 states we created for our q-table does not reflect the actual amount of s
 The q-table is updated based on the action which is performed. If the agent chooses to do ‘nothing’, then the the q-table is updated with the value 0. If the agent chooses to ‘crouch’, the q-table is updated based on if the agent gets off at the goal block or not. If the agent does successfully dismount at the goal block, then the q-table is updated with the value +10. Otherwise, the q-table is updated with the value -10. 
 
 Example of q-table during a trial:
-![useful image](status_q_table.png)
+![useful image](img/status_q_table.png)
 
 
 **Qualitative Evaluation:**
@@ -28,15 +28,15 @@ In our proposal, we stated that our baseline for success was if the agent could 
 
 Example Run:
 
-![useful image](ex_run1.png)
+![useful image](img/ex_run1.png)
 
 The agent before it gets on the cart. It calls ‘use’ to ride the cart. 
 
-![useful image](ex_run2.png)
+![useful image](img/ex_run2.png)
 
 The agent while it is riding the minecart. It calls run to determine where to dismount the cart. 
 
-![useful image](ex_run3.png)
+![useful image](img/ex_run3.png)
 
 The agent after dismounting the cart. 
 
@@ -48,7 +48,7 @@ We also aim to visually show that the agent dies when it performs the wrong acti
 
 Example future mission:
 
-![useful_image](future_mission.png)
+![useful_image](img/future_mission.png)
 
 
 
