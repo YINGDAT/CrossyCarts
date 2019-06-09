@@ -4,9 +4,11 @@ title:  Home
 ---
 ![banner](img/crossycarts.png)
 
-CrossyCarts is a Minecraft AI agent that plays a modified version of Crossy Road by Disney (or Frogger by Konami). The goal of our AI is to successfully cross the road by riding minecarts and getting off at destination blocks. 
+CrossyCarts is a Minecraft AI agent that plays a modified version of the games Crossy Road™ and Frogger™. In this version, the goal is to get on minecarts and get off of them at the right time in order to safely cross the tracks instead of avoiding cars or hopping onto moving logs.
 
-Source code: https://github.com/YINGDAT/CrossyCarts
+Our AI will be using Q-tabular reinforcement learning in order to solve this problem
+
+Source Code: [CrossyCarts Github](https://github.com/YINGDAT/CrossyCarts)
 
 Reports:
 
