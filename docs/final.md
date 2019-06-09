@@ -39,15 +39,16 @@ After running the program, the user is prompted to enter a number of tracks that
 
 **Q-Tabular Learning**
 
-* States
-    * Our states are stored as a tuple of (distance_from_goal, current_velocity).
+<u>States:</u>
+Our states are stored as a tuple of (distance_from_goal, current_velocity).
+
+distance_from_goal
+* The distance_from_goal only focuses on the x-coordinate difference (left ↔ right) because that is the only factor that plays into when the agent should get off the minecart. Movement in Minecraft is continuous, not block-by-block, so x-position values provided by Malmo are float values. Obviously, using this would create too many states for our q-table, so we rounded states to the nearest int.
     
-    distance_from_goal
-        * The distance_from_goal only focuses on the x-coordinate difference (left ↔ right) because that is the only factor that plays into when the agent should get off the minecart. Movement in Minecraft is continuous, not block-by-block, so x-position values provided by Malmo are float values. Obviously, using this would create too many states for our q-table, so we rounded to the nearest int
+current_velocity
+* .
     
-    current_velocity
-    
-* Rewards
+<u>Rewards:</u>
 
 
 ## Evaluation
