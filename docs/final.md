@@ -14,11 +14,11 @@ In this version, the player must get on minecarts and get off of them at the rig
 
 **Figure 1: Examples of successful (left) and unsuccessful (right) gameplay**
 
-&nbsp;
+</p>
 
-<img src="img/example_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
+<p align="center">
 
-&nbsp;
+<img src="img/example_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
 
 </p>
 
