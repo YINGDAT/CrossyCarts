@@ -45,19 +45,19 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 &nbsp;&nbsp; distance_from_goal
 * The distance_from_goal only focuses on the x-coordinate difference (left ↔ right) because that is the only factor that plays into when the agent should get off the minecart. Movement in Minecraft is continuous, not block-by-block, so x-position values provided by Malmo are float values. Obviously, using this would create too many states for our q-table, so we rounded states to the nearest integer value.
 
-> if x >= 0:
->       return int(x + 0.5) 
-> else:
->       return int(x -0.5)
+<p align="center">
 
+![useful_image](img/round_int.png)
+
+</p>
 
 * Distance is negative if it is on the right side of the goal (from the agent's perspective) and positive if it is on the left. Using the agent's current position, we calculated this by doing:
-> if x_pos < goal_pos:
->       return abs(goal_pos - x_pos)
-> elif x_pos > goal_pos:
->       return -abs(goal_pos - x_pos)
-> else:
->       return 0
+
+<p align="center">
+
+![useful_image](img/distance_away.png)
+
+</p>
 
 
 
