@@ -47,7 +47,7 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 
 <p align="center">
 
-![useful_image](img/round_int.png)
+![useful image](img/round_int.png)
 
 </p>
 
@@ -55,7 +55,7 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 
 <p align="center">
 
-![useful_image](img/distance_away.png)
+![useful image](img/distance_away.png)
 
 </p>
 
