@@ -45,6 +45,7 @@ After running the program, the user is prompted to enter a number of tracks that
 **Q-Tabular Learning**
 
 <u>States:</u>
+
 Our states are stored as a tuple of (distance_from_goal, current_velocity).
 
 &nbsp;&nbsp; distance_from_goal
@@ -68,8 +69,17 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 * Like the x-coordinate values, the velocity of the minecart also varied by many decimal places. In order to reduce the number of states we rounded again, this time to the nearest tenth decimal place.
 
 For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognize the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table. 
-    
+
+
 <u>Rewards:</u>
+
+* **=10**: landed on goal block
+* **-10**: landed on fire
+* **-1**: landed on fire when previously landing on either goal or fire from this state (q-value not 0)
+
+We will elaborate on these rewards when we explain our choose_action function below.
+
+
 
 ---
 
