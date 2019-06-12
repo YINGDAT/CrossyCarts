@@ -156,3 +156,6 @@ While building upon our prototype build we did have to make some changes to get 
 ---
 
 ## References
+
+* assignment 2
+* https://github.com/microsoft/malmo/blob/master/Malmo/samples/Python_examples/cart_test.py
