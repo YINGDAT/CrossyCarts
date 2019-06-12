@@ -144,6 +144,12 @@ While testing across 2, 3, and 4 tracks we noticed the agent had similar pattern
 
 </p>
 
+<p align="center">
+
+<img src="img/2_track_graph.png" width="100" height="80" 
+
+</p>
+
 For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognized the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table.
 
 ---
