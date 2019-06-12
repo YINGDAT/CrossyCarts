@@ -113,7 +113,7 @@ Our program is able to successfully find a path for the agent across multiple tr
 
 <p align="center">
 
-<img src="img/example_failure.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_success.gif" width="391" height="181" />
+<img src="img/example_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
 
 </p>
 
@@ -129,7 +129,7 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-<img src="img/2_track_graph.png" width="250" height="250" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="250" height="250" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="250" height="250" />
+<img src="img/2_track_graph.png" width="325" height="325" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="325" height="325" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="325" height="325" />
 
 </p>
 
