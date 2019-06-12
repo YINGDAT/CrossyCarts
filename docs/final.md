@@ -66,9 +66,7 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 </p>
 
 &nbsp;&nbsp; current_velocity
-* Like the x-coordinate values, the velocity of the minecart also varied by many decimal places. In order to reduce the number of states we rounded again, this time to the nearest tenth decimal place.
-
-For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognize the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table. 
+* Like the x-coordinate values, the velocity of the minecart also varied by many decimal places. In order to reduce the number of states we rounded again, this time to the nearest tenth decimal place. 
 
 
 <u>Rewards:</u>
@@ -84,6 +82,36 @@ We will elaborate on these rewards when we explain our choose_action function be
 ---
 
 ## Evaluation
+
+Pictured below is a table which shows an example of the agent on a track and how the q-table would get updated based on which block it gets off at. 
+* Green = goal block
+* Red = fire block (agent hasn’t tried block yet)
+* Orange = fire block (agent previously tried this block)
+* A = agent
+
+<img src="img/example_table.png" width="800" height="60" />
+
+Our program is able to successfully find a path for the agent across multiple tracks. As previously stated, our baseline for success was testing whether the agent could make it across one track. 
+
+<p align="center">
+
+<strong>Figure 1: Examples of successful (left) and unsuccessful (right) gameplay</strong>
+
+</p>
+
+<p align="center">
+
+<img src="img/example_failure.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_success.gif" width="391" height="181" />
+
+</p>
+
+The two images above were taken from the same run. The example on the left shows the agent failing to solve the problem while the example on the right shows how it learned and solved the problem. 
+
+After successfully solving the baseline, we moved on to testing our program with multiple tracks. 
+
+
+
+For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognized the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table.
 
 ---
 
