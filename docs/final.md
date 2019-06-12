@@ -15,13 +15,13 @@ In this version, the player must get on minecarts and get off of them at the rig
 
 <p align="center">
 
-<strong>Figure 1: Example of gameplay</strong>
+<strong>Figure 1: Example of Gameplay</strong>
 
 </p>
 
 <p align="center">
 
-<img src="img/track_showcase.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
+<img src="img/track_showcase.gif" width="391" height="181" />
 
 </p>
 
@@ -84,18 +84,27 @@ We will elaborate on these rewards when we explain our choose_action function be
 ## Evaluation
 
 Pictured below is a table which shows an example of the agent on a track and how the q-table would get updated based on which block it gets off at. 
+<p align="center">
+
+<strong>Figure 2: Example of Rewards</strong>
+
+</p>
+
+<p align="center">
+  
+<img src="img/example_table.png" width="800" height="60" />
+
+</p>
 * Green = goal block
 * Red = fire block (agent hasn’t tried block yet)
 * Orange = fire block (agent previously tried this block)
 * A = agent
 
-<img src="img/example_table.png" width="800" height="60" />
-
 Our program is able to successfully find a path for the agent across multiple tracks. As previously stated, our baseline for success was testing whether the agent could make it across one track. 
 
 <p align="center">
 
-<strong>Figure 1: Examples of successful (left) and unsuccessful (right) gameplay</strong>
+<strong>Figure 3: Examples of successful (left) and unsuccessful (right) gameplay</strong>
 
 </p>
 
@@ -111,13 +120,27 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-<strong>Figure 1: Examples of successful gameplay across 3 tracks</strong>
+<strong>Figure 4: Example of Successful Gameplay Across 3 Tracks</strong>
 
 </p>
 
 <p align="center">
 
-<img src="img/3_track_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_success.gif" width="391" height="181" />
+<img src="img/3_track_success.gif" width="391" height="181" /> 
+
+</p>
+
+While testing across 2, 3, and 4 tracks we noticed the agent had similar patterns while solving the problems. 
+
+<p align="center">
+
+<strong>Figure 5: Data From Successful Runs Across 2 Tracks (left), 3 Tracks (middle), and 4 Tracks (right) </strong>
+
+</p>
+
+<p align="center">
+
+<img src="img/2_track_graph.png" width="250" height="250" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="250" height="250" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="250" height="250" />
 
 </p>
 
