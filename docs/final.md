@@ -146,7 +146,7 @@ While testing across 2, 3, and 4 tracks we noticed the agent had similar pattern
 
 <p align="center">
 
-<img src="img/2_track_graph.png" width="100" height="80" 
+<img src="img/data_key.png" width="100" height="80" 
 
 </p>
 
