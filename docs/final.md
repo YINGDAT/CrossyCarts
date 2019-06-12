@@ -15,13 +15,13 @@ In this version, the player must get on minecarts and get off of them at the rig
 
 <p align="center">
 
-<strong>Figure 1: Examples of successful (left) and unsuccessful (right) gameplay</strong>
+<strong>Figure 1: Example of gameplay</strong>
 
 </p>
 
 <p align="center">
 
-<img src="img/example_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
+<img src="img/track_showcase.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
 
 </p>
 
@@ -109,7 +109,17 @@ The two images above were taken from the same run. The example on the left shows
 
 After successfully solving the baseline, we moved on to testing our program with multiple tracks. 
 
+<p align="center">
 
+<strong>Figure 1: Examples of successful gameplay across 3 tracks</strong>
+
+</p>
+
+<p align="center">
+
+<img src="img/3_track_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_success.gif" width="391" height="181" />
+
+</p>
 
 For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognized the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table.
 
