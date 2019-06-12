@@ -116,25 +116,11 @@ Our program is able to successfully find a path for the agent across multiple tr
 
 The two images above were taken from the same run. The example on the left shows the agent failing to solve the problem while the example on the right shows how it learned and solved the problem. 
 
-After successfully solving the baseline, we moved on to testing our program with multiple tracks. 
+After successfully solving the baseline, we moved on to testing our program with multiple tracks. While runnning the tests across 2, 3, and 4 tracks we noticed the data had similar patterns; therefore, it can solve cases across any number of tracks.
 
 <p align="center">
 
-<strong>Figure 4: Example of Successful Gameplay Across 3 Tracks</strong>
-
-</p>
-
-<p align="center">
-
-<img src="img/3_track_success.gif" width="391" height="181" /> 
-
-</p>
-
-While testing across 2, 3, and 4 tracks we noticed the agent had similar patterns while solving the problems. 
-
-<p align="center">
-
-<strong>Figure 5: Data From Successful Runs Across 2 Tracks (left), 3 Tracks (middle), and 4 Tracks (right) </strong>
+<strong>Figure 4: Data From Successful Runs Across 2 Tracks (left), 3 Tracks (middle), and 4 Tracks (right) </strong>
 
 </p>
 
@@ -150,7 +136,19 @@ While testing across 2, 3, and 4 tracks we noticed the agent had similar pattern
 
 </p>
 
-For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognized the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table.
+<p align="center">
+
+<strong>Figure 5: Example of Successful Gameplay Across 3 Tracks</strong>
+
+</p>
+
+<p align="center">
+
+<img src="img/3_track_success.gif" width="391" height="181" /> 
+
+</p>
+
+While building upon our prototype build we did have to make some changes to get our final version. For our prototype build we only used the agent's current rounded x-position for our states. In our final version we realized we needed to make changes in order to be able to cross multiple tracks. By using the distance away from the goal block and velocities as states our agent is able to apply what it learned from successfully crossing the first track onto crossing subsequent tracks. After making these changes we recognized the disadvantages of using q-learning for this problem since many things had to be rounded in order to efficiently use a q-table.
 
 ---
 
