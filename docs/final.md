@@ -113,7 +113,7 @@ Our program is able to successfully find a path for the agent across multiple tr
 
 <p align="center">
 
-<img src="img/example_success.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_failure.gif" width="391" height="181" />
+<img src="img/example_failure.gif" width="391" height="181" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/example_success.gif" width="391" height="181" />
 
 </p>
 
