@@ -104,6 +104,8 @@ The advantage of approaching our choose_action function in this way is that all 
 
 ## Evaluation
 
+In this section we will show clips of successful missions for our qualitative evaluation and showcase graphs for the quantitative evaluation.
+
 Pictured below is a table which shows an example of the agent on a track and how the q-table would get updated based on which block it gets off at. 
 <p align="center">
 
@@ -165,8 +167,6 @@ The similar curves shown on each graph show where the agent comes to a stop and 
 <p align="center">
 
 <strong>Figure 5: Example of Successful Gameplay Across 3 Tracks</strong>
-
-</p>
 
 </p>
 
