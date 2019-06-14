@@ -73,7 +73,7 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 
 <u>Rewards:</u>
 
-* **=10**: landed on goal block
+* **+10**: landed on goal block
 * **-10**: landed on fire
 * **-1**: landed on fire when previously landing on either goal or fire from this state (q-value not 0)
 
@@ -81,14 +81,23 @@ We will elaborate on these rewards when we explain our choose_action function be
 
 <p align="center">
 
+<strong>Pseudo-code of choose_action</strong>
+
+</p>
+
+<p align="center">
+
 <img src="img/choose_action_code.png" />
 
 </p>
 
-These q-table values are used in the function “choose_action” in order to select which action the agent should perform. It first checks the value stored for the action “crouch” in the q-table at the current state; this value is stored as q-value. If the q-value is >= 10, that means calling “crouch” at that state has worked previously, so the agent tries again. If the q-value is between 1 and 9, that means there was a previous success, but also some failures while crossing the tracks. Our program has a 75% chance to try again, with a -15% penalty per additional failure. For example, if there is a new failure at that position, the chance of choosing "crouch" at that state would drop from 75 to 60%. If there were no previous successes at the current_state, we use a epsilon-greedy policy to determine whether or not the agent should call “crouch”, or get off at the current block, or do “nothing” and let the block pass.  
+The q-table values are used in the function “choose_action” in order to select which action the agent should perform.
+* If the q-value is >= 10, that means calling “crouch” at that state has worked previously, so the agent knows that if it crouches at this state it will land on the goal block.
+* If the q-value is between 1 and 9, that means there was a previous success at this state, but also failure(s). This could be caused by lag that causes our agent's action to execute late (when it enters another state) which can happen since the agent is constantly moving at high speeds. Our program has a 75% chance to try again, with a -15% penalty per additional failure. For example, if there is a new failure at that position, the chance of choosing "crouch" at that state would drop from 75 to 60%.
+* If the q-value is 0, the agent checks if the solution has already been found. If it has not, then the agent will "crouch" in order to test the current state
+* If the q-value is < 0, that means that there was a previous failure at this state. We use a epsilon-greedy policy of 0.04 to determine whether or not the agent should call “crouch” and retry this state, or do “nothing” and let the block pass. This epsilon value drops 2% per additional failure. Keep in mind that since our agent movement is continuous but our states have rounded position coordinates these small percentages happen more often than it may seem.
 
 When “crouch” is called, the q-table gets updated. As stated previously, if the agent successfully gets off at the goal block, it is rewarded with +10, if it gets off at a fire block, it is penalized with -10, and if it gets off at a fire block it has already gotten off at, it is penalized with an additional -1. 
-
 
 ---
 
