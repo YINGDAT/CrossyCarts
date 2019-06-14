@@ -77,7 +77,8 @@ Our states are stored as a tuple of (distance_from_goal, current_velocity).
 * **-10**: landed on fire
 * **-1**: landed on fire when previously landing on either goal or fire from this state (q-value not 0)
 
-We will elaborate on these rewards when we explain our choose_action function below.
+
+<u>choose_action function</u>
 
 <p align="center">
 
@@ -146,7 +147,7 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-<img src="img/2_track_graph.png" width="350" height="350" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="350" height="350" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="350" height="350" />
+<img src="img/2_track_graph.png" width="370" height="370" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="370" height="370" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="370" height="370" />
 
 </p>
 
@@ -160,7 +161,11 @@ After successfully solving the baseline, we moved on to testing our program with
 
 The similar curves shown on each graph show where the agent comes to a stop and accelerate when hitting either end of the 20-block track. As you can see, the successful states are all around the same distance and velocity away from the goal block. This pattern shows that the agent can eventually solve any number of tracks. 
 
+<p align="center">
+
 <strong>Figure 5: Example of Successful Gameplay Across 3 Tracks</strong>
+
+</p>
 
 </p>
 
