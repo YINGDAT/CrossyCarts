@@ -38,7 +38,7 @@ Minecarts typically have a predefined speed of 8 m/s. In our CrossyCart game, ho
 
 In our previous report we created an AI that was able to eventually complete 1 track with a predetermined goal block which served as our baseline. Since then, we have randomized the position of the goal block and changed our states and rewards in order to create an AI that is able to complete multiple tracks with different goal blocks.
 
-Our AI automatically gets into position to get on the minecart and gets on the minecart. The main problem lies in when it decides to get off of the minecart. We chose to use q-tabular reinforcement learning because there is a moderate number of states with only two actions to choose from: get off (crouch) or nothing. Since q-learning is model free, we are also able to see the agent learn to complete the track and handle stochastic transitions (ex. changes in speed while riding).
+Our AI automatically gets into position to get on the minecart and gets on the minecart. The main problem lies in when it decides to get off of the minecart. We chose to use q-tabular reinforcement learning because there is a moderate number of states with only two actions to choose from: get off (crouch) or nothing. Since q-learning is model free, we are also able to see the agent learn to complete the track and handle stochastic transitions (ex. changes in speed while riding). The disadvantages of a q-tabular approach will be discussed at the end.
 
 **Track Set-up**
 
@@ -98,7 +98,7 @@ The q-table values are used in the function “choose_action” in order to sele
 * If the q-value is 0, the agent checks if the solution has already been found. If it has not, then the agent will "crouch" in order to test the current state
 * If the q-value is < 0, that means that there was a previous failure at this state. We use a epsilon-greedy policy of 0.04 to determine whether or not the agent should call “crouch” and retry this state, or do “nothing” and let the block pass. This epsilon value drops 2% per additional failure. Keep in mind that since our agent movement is continuous but our states have rounded position coordinates these small percentages happen more often than it may seem.
 
-When “crouch” is called, the q-table gets updated. As stated previously, if the agent successfully gets off at the goal block, it is rewarded with +10, if it gets off at a fire block, it is penalized with -10, and if it gets off at a fire block it has already gotten off at, it is penalized with an additional -1. 
+The advantage of approaching our choose_action function in this way is that all of the percentage chances of retrying states account for mistakes caused by system lag (which increases when trying to run and screen record). The disadvantage is that it takes longer for the mission to converge since retrying leads to repeating failures. 
 
 ---
 
@@ -147,7 +147,7 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-<img src="img/2_track_graph.png" width="370" height="370" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="370" height="370" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="370" height="370" />
+<img src="img/2_track_graph.png" width="370" height="370" /> &nbsp;&nbsp; <img src="img/3_track_graph.png" width="370" height="370" /> &nbsp;&nbsp; <img src="img/4_track_graph.png" width="370" height="370" />
 
 </p>
 
