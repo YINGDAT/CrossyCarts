@@ -81,7 +81,7 @@ We will elaborate on these rewards when we explain our choose_action function be
 
 <p align="center">
 
-<img src="img/choose_action_code.png" width="259" height="108" />
+<img src="img/choose_action_code.png" />
 
 </p>
 
@@ -125,9 +125,9 @@ Our program is able to successfully find a path for the agent across multiple tr
 
 </p>
 
-The two images above were taken from the same run. The example on the left shows the agent failing to solve the problem while the example on the right shows how it learned and solved the problem. 
+The example on the left shows the agent failing to solve the problem while the example on the right shows how it learned and solved the problem. 
 
-After successfully solving the baseline, we moved on to testing our program with multiple tracks. While runnning the tests across 2, 3, and 4 tracks we noticed the data had similar patterns; therefore, it can solve cases across any number of tracks.
+After successfully solving the baseline, we moved on to testing our program with multiple tracks. The graphs below show the q-table data from running the program on 2, 3, and 4 tracks.
 
 <p align="center">
 
@@ -137,7 +137,7 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-<img src="img/2_track_graph.png" width="325" height="325" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="325" height="325" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="325" height="325" />
+<img src="img/2_track_graph.png" width="350" height="350" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/3_track_graph.png" width="350" height="350" /> &nbsp;&nbsp;&nbsp;&nbsp; <img src="img/4_track_graph.png" width="350" height="350" />
 
 </p>
 
@@ -148,6 +148,8 @@ After successfully solving the baseline, we moved on to testing our program with
 </p>
 
 <p align="center">
+
+The similar curves shown on each graph show where the agent comes to a stop and accelerate when hitting either end of the 20-block track. As you can see, the successful states are all around the same distance and velocity away from the goal block. This pattern shows that the agent can eventually solve any number of tracks. 
 
 <strong>Figure 5: Example of Successful Gameplay Across 3 Tracks</strong>
 
