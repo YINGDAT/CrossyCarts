@@ -157,7 +157,6 @@ After successfully solving the baseline, we moved on to testing our program with
 
 </p>
 
-<p align="center">
 
 In the graph above, the numbered black and brown blocks represent the distance from the goal block. The grey, red, and green blocks represent the different velocities at those distance blocks. The brown blocks indicate the range of the possible distance_from_goal blocks in those specific mission runs. Since goal blocks are randomized, the possible distance_from_goal states differ in each mission. For example, if the goal block is at the far left, then the track would have less positive distance_from_goal states and more negative distance_from_goal states. 
 
