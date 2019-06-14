@@ -147,7 +147,7 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-<img src="img/2_track_graph.png" width="370" height="370" /> &nbsp;&nbsp; <img src="img/3_track_graph.png" width="370" height="370" /> &nbsp;&nbsp; <img src="img/4_track_graph.png" width="370" height="370" />
+<img src="img/2_track_graph.png" width="360" height="360" /> &nbsp;&nbsp; <img src="img/3_track_graph.png" width="360" height="360" /> &nbsp;&nbsp; <img src="img/4_track_graph.png" width="360" height="360" />
 
 </p>
 
@@ -159,7 +159,9 @@ After successfully solving the baseline, we moved on to testing our program with
 
 <p align="center">
 
-The similar curves shown on each graph show where the agent comes to a stop and accelerate when hitting either end of the 20-block track. As you can see, the successful states are all around the same distance and velocity away from the goal block. This pattern shows that the agent can eventually solve any number of tracks. 
+In the graph above, the numbered black and brown blocks represent the distance from the goal block. The grey, red, and green blocks represent the different velocities at those distance blocks. The brown blocks indicate the range of the possible distance_from_goal blocks in those specific mission runs. Since goal blocks are randomized, the possible distance_from_goal states differ in each mission. For example, if the goal block is at the far left, then the track would have less positive distance_from_goal states and more negative distance_from_goal states. 
+
+The similar curves shown on each graph show where the agent comes to a stop and accelerate when hitting either end of the 20-block track. As you can see, the successful states are all around the same distance and velocity away from the goal block. The data remains relatively the same no matter where the goal block is or how many tracks there are. This pattern present in all 3 graphs above shows that the agent can eventually solve any number of tracks. 
 
 <p align="center">
 
